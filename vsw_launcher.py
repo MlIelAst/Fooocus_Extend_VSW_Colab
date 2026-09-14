@@ -10,6 +10,8 @@ MEMORY_PATCH = True
 GOOGLE_DRIVE_OUTPUT = False
 USE_LATEST_MAIN = False
 FORCE_REBUILD = False
+EXTRA_CHECKPOINTS = ""
+EXTRA_LORAS = ""
 
 REPO = "https://github.com/shaitanzx/Fooocus_extend.git"
 PINNED = "7d32c923c172644023f77243bd7af4183ecb3737"  # v9.3.5
@@ -125,7 +127,7 @@ print(cuda.stdout,flush=True)
 if cuda.returncode or "\nTrue\n" not in cuda.stdout:
     raise RuntimeError("Torch in der isolierten Umgebung erkennt CUDA nicht.")
 
-phase(6,"Optionale Dienste","0–2 Min.")
+phase(6,"Optionale Dienste / Zusatzmodelle","0–15+ Min.")
 for pattern in ("launch.py","entry_with_update.py","cloudflared tunnel"):
     subprocess.run(["pkill","-f",pattern],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 output=[]
@@ -135,6 +137,19 @@ if GOOGLE_DRIVE_OUTPUT:
     OUT.mkdir(parents=True,exist_ok=True); output=["--output-path",str(OUT)]
 else:
     print("Google Drive bleibt getrennt.",flush=True)
+
+# Die Hilfsdateien stammen aus diesem VSW-Repository. So bleibt der Launcher selbst kompakt.
+helper_base="https://raw.githubusercontent.com/MlIelAst/Fooocus_Extend_VSW_Colab/main/"
+for helper in ("vsw_civitai.py","vsw_runtime.py"):
+    target=Path("/content")/helper
+    import urllib.request
+    urllib.request.urlretrieve(helper_base+helper,target)
+if "/content" not in sys.path: sys.path.insert(0,"/content")
+from vsw_civitai import download_extra_models
+
+download_extra_models(EXTRA_CHECKPOINTS, ROOT/"models/checkpoints", "Checkpoint")
+download_extra_models(EXTRA_LORAS, ROOT/"models/loras", "LoRA")
+
 if TUNNEL=="cloudflared":
     if not shutil.which("cloudflared"):
         run(["wget","-q","-O","/tmp/cloudflared.deb",
@@ -151,7 +166,8 @@ if MEMORY_PATCH: args+=["--always-high-vram","--all-in-fp16"]
 args+=output
 print("Code-Stand:",commit[:12],"| VENV:",PY,"| Log:",LOG,flush=True)
 try:
-    run(args,cwd=ROOT,heartbeat=20)
+    from vsw_runtime import run_fooocus
+    run_fooocus(args,cwd=ROOT,log_path=LOG,tunnel=TUNNEL,start_time=START)
 except Exception:
     print("\nVSW-DIAGNOSE",flush=True)
     print("Python:",sys.version.split()[0],"| Commit:",commit,flush=True)
