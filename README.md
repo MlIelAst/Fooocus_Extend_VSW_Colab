@@ -20,34 +20,33 @@ Diesen Link kannst du direkt an Teilnehmende weitergeben.
 
 ---
 
-## ⚠️ Wichtig seit September 2026: Runtime 26.07 verwenden
+## ✅ Runtime und GPU sind bereits hinterlegt
 
-Google Colab stellt aktuell standardmäßig auf **Python 3.13** um. Fooocus_extend verwendet mehrere ältere Abhängigkeiten, die derzeit unter Python 3.13 nicht zuverlässig installiert werden können.
+Das Notebook ist direkt auf **Colab Runtime 2025.07 (Python 3.11)** und eine **T4-GPU** festgelegt.
 
-Darum vor dem ersten Start bitte einmal:
+Im Normalfall müssen Teilnehmende **nichts unter „Laufzeit → Laufzeittyp ändern“ einstellen**.
 
-1. In Colab **`Strg + Shift + P`** drücken oder die **Befehlspalette** öffnen.
-2. **`Change runtime version` / `Laufzeitversion ändern`** auswählen.
-3. **Runtime `26.07`** auswählen. Alternativ funktioniert auch **`26.04`**.
-4. Anschließend: **Laufzeit → Laufzeittyp ändern → GPU**.
-5. Danach mit **Zelle 1** beginnen.
+Einfach:
 
-> Colab speichert die gewählte Runtime-Version derzeit nicht dauerhaft. Bei einer neuen Sitzung muss dieser Schritt ggf. erneut durchgeführt werden.
+1. Notebook öffnen
+2. **▶ Fooocus_extend STARTEN / NEUSTARTEN** ausführen
+3. Beim allerersten Start die automatische Wiederverbindung abwarten
+4. dieselbe Start-Zelle noch einmal ausführen
+5. `gradio.live`-Link öffnen
 
-Das Notebook prüft die Python-Version zusätzlich selbst. Wird Python 3.13 erkannt, verändert es **keine Pakete**, sondern zeigt die obigen Schritte an.
+> Falls Colab ausnahmsweise die hinterlegte Runtime oder GPU nicht bereitstellt, zeigt das Notebook eine verständliche Fehlermeldung mit dem manuellen Ersatzweg an.
 
 ---
 
 ## Schnellstart
 
 1. **Notebook öffnen** – oben auf **Open in Colab** klicken.
-2. **Runtime 26.07 wählen** – über die Befehlspalette.
-3. **GPU aktivieren** – `Laufzeit → Laufzeittyp ändern → GPU`.
-4. **Zelle 1 ausführen** – die benötigten Paketversionen werden geprüft und bei Bedarf angepasst.
-5. Falls Colab einmal neu startet: kurz warten und danach **Zelle 2 ausführen**.
-6. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
+2. **Start-Zelle ausführen** – auf **▶ Fooocus_extend STARTEN / NEUSTARTEN** klicken.
+3. **Nur beim allerersten Start:** Colab passt benötigte Paketversionen an und verbindet sich danach automatisch neu.
+4. Nach der Wiederverbindung **dieselbe Start-Zelle noch einmal ausführen**.
+5. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
 
-Beim ersten Start kann die Einrichtung länger dauern, weil Modelle und Abhängigkeiten geladen werden.
+Eine manuelle Runtime- oder GPU-Auswahl ist im Normalfall nicht erforderlich.
 
 ---
 
@@ -55,19 +54,19 @@ Beim ersten Start kann die Einrichtung länger dauern, weil Modelle und Abhängi
 
 Das Notebook basiert auf dem Colab-Start von Fooocus_extend, wurde aber für eine möglichst einfache und wiederholbare Schulungsnutzung überarbeitet.
 
-### Python-/Runtime-Prüfung
+### Runtime und GPU automatisch vorgegeben
 
-Das Notebook erkennt den aktuellen Python-Stand der Colab-Sitzung. Python 3.13 wird abgefangen, bevor inkompatible Pakete verändert werden.
+Das Notebook fordert direkt **Runtime 2025.07** und eine **T4-GPU** an. Dadurch entfällt im Normalfall die manuelle Auswahl über **Laufzeit → Laufzeittyp ändern**.
 
 ### Automatische Vorbereitung
 
-Unter der kompatiblen Python-3.12-Runtime prüft das Notebook die benötigten Versionen von:
+Die Start-Zelle prüft automatisch die benötigten Versionen von:
 
 - `nvidia-cudnn-cu12`
 - `pygit2`
 - `numpy`
 
-Weichen diese ab, werden sie angepasst. Anschließend startet Colab einmal neu.
+Weichen die Versionen beim ersten Start ab, werden sie automatisch angepasst. Colab verbindet sich danach einmal neu. Anschließend wird dieselbe Start-Zelle erneut ausgeführt.
 
 ### GPU- und CUDA-Prüfung
 
@@ -225,7 +224,8 @@ Dateien, die vorher bewusst in Google Drive gespeichert wurden, bleiben dort erh
 
 # Hinweise für Teilnehmende
 
-- Eine kostenlose Colab-GPU ist nicht jederzeit garantiert verfügbar.
+- Das Notebook fordert automatisch **Runtime 2025.07** und eine **T4-GPU** an.
+- Eine kostenlose Colab-GPU ist trotzdem nicht jederzeit garantiert verfügbar.
 - Colab kann längere oder ressourcenintensive Sitzungen beenden.
 - Die Rechenleistung kommt aus der Colab-Cloud; eine leistungsfähige lokale Grafikkarte ist deshalb nicht erforderlich.
 - Das Notebook lädt Code und Modelle von externen Projekten. Für produktive oder besonders sensible Daten sollten die jeweils geltenden Datenschutz-, Sicherheits- und Organisationsvorgaben geprüft werden.
