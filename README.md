@@ -20,13 +20,32 @@ Diesen Link kannst du direkt an Teilnehmende weitergeben.
 
 ---
 
+## ⚠️ Wichtig seit September 2026: Runtime 26.07 verwenden
+
+Google Colab stellt aktuell standardmäßig auf **Python 3.13** um. Fooocus_extend verwendet mehrere ältere Abhängigkeiten, die derzeit unter Python 3.13 nicht zuverlässig installiert werden können.
+
+Darum vor dem ersten Start bitte einmal:
+
+1. In Colab **`Strg + Shift + P`** drücken oder die **Befehlspalette** öffnen.
+2. **`Change runtime version` / `Laufzeitversion ändern`** auswählen.
+3. **Runtime `26.07`** auswählen. Alternativ funktioniert auch **`26.04`**.
+4. Anschließend: **Laufzeit → Laufzeittyp ändern → GPU**.
+5. Danach mit **Zelle 1** beginnen.
+
+> Colab speichert die gewählte Runtime-Version derzeit nicht dauerhaft. Bei einer neuen Sitzung muss dieser Schritt ggf. erneut durchgeführt werden.
+
+Das Notebook prüft die Python-Version zusätzlich selbst. Wird Python 3.13 erkannt, verändert es **keine Pakete**, sondern zeigt die obigen Schritte an.
+
+---
+
 ## Schnellstart
 
 1. **Notebook öffnen** – oben auf **Open in Colab** klicken.
-2. **GPU aktivieren** – `Laufzeit → Laufzeittyp ändern → GPU`.
-3. **Zelle 1 ausführen** – die benötigten Paketversionen werden geprüft und bei Bedarf angepasst.
-4. **Nach dem automatischen Neustart Zelle 2 ausführen** – Fooocus_extend wird installiert bzw. aktualisiert und gestartet.
-5. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
+2. **Runtime 26.07 wählen** – über die Befehlspalette.
+3. **GPU aktivieren** – `Laufzeit → Laufzeittyp ändern → GPU`.
+4. **Zelle 1 ausführen** – die benötigten Paketversionen werden geprüft und bei Bedarf angepasst.
+5. Falls Colab einmal neu startet: kurz warten und danach **Zelle 2 ausführen**.
+6. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
 
 Beim ersten Start kann die Einrichtung länger dauern, weil Modelle und Abhängigkeiten geladen werden.
 
@@ -36,26 +55,30 @@ Beim ersten Start kann die Einrichtung länger dauern, weil Modelle und Abhängi
 
 Das Notebook basiert auf dem Colab-Start von Fooocus_extend, wurde aber für eine möglichst einfache und wiederholbare Schulungsnutzung überarbeitet.
 
+### Python-/Runtime-Prüfung
+
+Das Notebook erkennt den aktuellen Python-Stand der Colab-Sitzung. Python 3.13 wird abgefangen, bevor inkompatible Pakete verändert werden.
+
 ### Automatische Vorbereitung
 
-Das Notebook prüft die aktuell benötigten Versionen von:
+Unter der kompatiblen Python-3.12-Runtime prüft das Notebook die benötigten Versionen von:
 
 - `nvidia-cudnn-cu12`
 - `pygit2`
 - `numpy`
 
-Weichen die Versionen in Colab ab, werden sie automatisch angepasst. Anschließend startet Colab einmal neu.
+Weichen diese ab, werden sie angepasst. Anschließend startet Colab einmal neu.
 
 ### GPU- und CUDA-Prüfung
 
-Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch gibt es bei einer versehentlich gestarteten CPU-Laufzeit eine verständliche Fehlermeldung statt eines schwer lesbaren CUDA-Abbruchs.
+Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch gibt es bei einer versehentlich gestarteten CPU-Laufzeit eine verständliche Meldung statt eines schwer lesbaren CUDA-Abbruchs.
 
 ### Wiederholbarer Start
 
 - vorhandene Fooocus-Prozesse werden vor einem Neustart beendet,
 - Fooocus_extend wird nur geklont, wenn es noch nicht vorhanden ist,
 - eine vorhandene Installation wird auf den aktuellen `main`-Stand aktualisiert,
-- der frühere Fehler `destination path already exists` wird vermieden.
+- Fehler wie `destination path already exists` werden vermieden.
 
 ### Google Drive nur optional
 
@@ -75,7 +98,7 @@ Dadurch bleiben generierte Bilder zunächst nur in der temporären Colab-Umgebun
 
 # Was ist Fooocus_extend?
 
-Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zahlreiche zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung.
+Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung.
 
 ## Bildgenerierung
 
@@ -89,7 +112,7 @@ Eigene Checkpoints und LoRAs können geladen und kombiniert werden. LoRA-Gewicht
 Erzeugt automatisch neue Prompts oder Variationen eines bestehenden Prompts.
 
 **Prompt Translate**  
-Übersetzt positive und negative Prompts und erleichtert so die Arbeit mit englischsprachigen Bildmodellen.
+Übersetzt positive und negative Prompts und erleichtert die Arbeit mit englischsprachigen Bildmodellen.
 
 ## Personen und Gesichter
 
