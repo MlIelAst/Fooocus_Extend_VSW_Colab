@@ -2,9 +2,7 @@
 
 Ein vereinfachtes und für Schulungen vorbereitetes **Google-Colab-Notebook für Fooocus_extend**.
 
-Der Schwerpunkt liegt auf einem möglichst einfachen Start, einer reproduzierbaren Colab-Umgebung und einer klaren Trennung zwischen **dauerhaftem Notebook**, **temporärer Programmumgebung** und **optional gespeicherten Bildern**.
-
-> Dieses Repository enthält **nicht Fooocus_extend selbst**. Das Notebook lädt beim Start den aktuellen Stand des Originalprojekts von [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend).
+Das Repository enthält **nicht Fooocus_extend selbst**. Beim Start lädt das Notebook den aktuellen Stand des Originalprojekts von [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend).
 
 ---
 
@@ -25,12 +23,12 @@ Diesen Link kannst du direkt an Teilnehmende weitergeben.
 ## Schnellstart
 
 1. **Notebook öffnen** – oben auf **Open in Colab** klicken.
-2. **GPU aktivieren** – in Colab: `Laufzeit → Laufzeittyp ändern → GPU`.
-3. **Vorbereitung ausführen** – **Zelle 1** starten. Benötigte Paketversionen werden geprüft und bei Bedarf angepasst.
+2. **GPU aktivieren** – `Laufzeit → Laufzeittyp ändern → GPU`.
+3. **Zelle 1 ausführen** – die benötigten Paketversionen werden geprüft und bei Bedarf angepasst.
 4. **Nach dem automatischen Neustart Zelle 2 ausführen** – Fooocus_extend wird installiert bzw. aktualisiert und gestartet.
-5. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`. Diese im Browser öffnen.
+5. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
 
-Beim allerersten Start kann die Einrichtung etwas länger dauern, weil Modelle und Abhängigkeiten geladen werden.
+Beim ersten Start kann die Einrichtung länger dauern, weil Modelle und Abhängigkeiten geladen werden.
 
 ---
 
@@ -40,7 +38,7 @@ Das Notebook basiert auf dem Colab-Start von Fooocus_extend, wurde aber für ein
 
 ### Automatische Vorbereitung
 
-Das Notebook prüft die für Fooocus_extend derzeit benötigten Versionen von:
+Das Notebook prüft die aktuell benötigten Versionen von:
 
 - `nvidia-cudnn-cu12`
 - `pygit2`
@@ -50,17 +48,14 @@ Weichen die Versionen in Colab ab, werden sie automatisch angepasst. Anschließe
 
 ### GPU- und CUDA-Prüfung
 
-Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch erscheint bei einer versehentlich gestarteten CPU-Laufzeit eine verständliche Fehlermeldung statt eines schwer lesbaren CUDA-Abbruchs.
+Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch gibt es bei einer versehentlich gestarteten CPU-Laufzeit eine verständliche Fehlermeldung statt eines schwer lesbaren CUDA-Abbruchs.
 
-### Sauberer Neustart
+### Wiederholbarer Start
 
-Bei erneutem Ausführen werden vorhandene Fooocus-Prozesse beendet. Das verhindert Konflikte, wenn die Anwendung innerhalb derselben Colab-Sitzung neu gestartet wird.
-
-### Installation und Updates
-
-- Ist Fooocus_extend noch nicht vorhanden, wird es automatisch installiert.
-- Ist es bereits vorhanden, wird der Programmcode auf den aktuellen `main`-Stand des Originalprojekts aktualisiert.
-- Der frühere Fehler `destination path already exists` wird dadurch vermieden.
+- vorhandene Fooocus-Prozesse werden vor einem Neustart beendet,
+- Fooocus_extend wird nur geklont, wenn es noch nicht vorhanden ist,
+- eine vorhandene Installation wird auf den aktuellen `main`-Stand aktualisiert,
+- der frühere Fehler `destination path already exists` wird vermieden.
 
 ### Google Drive nur optional
 
@@ -68,13 +63,9 @@ Bei erneutem Ausführen werden vorhandene Fooocus-Prozesse beendet. Das verhinde
 
 Dadurch bleiben generierte Bilder zunächst nur in der temporären Colab-Umgebung. Wer Ergebnisse dauerhaft speichern möchte, kann die Option bewusst auf **True** setzen.
 
-### Profile und Oberfläche
+### Direkt auswählbar
 
-Direkt in der Startzelle auswählbar:
-
-- `realistic`
-- `default`
-- `anime`
+- Profil: `realistic`, `default` oder `anime`
 - helles oder dunkles Theme
 - Gradio oder optional Cloudflared
 - Memory Patch für Colab-GPUs
@@ -84,23 +75,21 @@ Direkt in der Startzelle auswählbar:
 
 # Was ist Fooocus_extend?
 
-Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zahlreiche zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung. Die folgenden Funktionen stammen aus dem Originalprojekt und können sich mit zukünftigen Updates verändern. fileciteturn36file0
+Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zahlreiche zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung.
 
 ## Bildgenerierung
 
 **Prompt & Negative Prompt**  
-Beschreibe im Prompt, was erzeugt werden soll. Im Negative Prompt können unerwünschte Merkmale ausgeschlossen werden.
+Im Prompt wird beschrieben, was erzeugt werden soll. Im Negative Prompt können unerwünschte Merkmale ausgeschlossen werden.
 
 **Modelle und LoRAs**  
-Eigene Checkpoints und LoRAs können geladen und kombiniert werden. Bei LoRAs lassen sich unter anderem Gewichtung und Trigger-Wörter verwenden.
+Eigene Checkpoints und LoRAs können geladen und kombiniert werden. LoRA-Gewichtung und Trigger-Wörter lassen sich direkt verwenden.
 
 **OneButtonPrompt**  
-Hilft dabei, automatisch neue Prompts oder Variationen eines bestehenden Prompts zu erzeugen.
+Erzeugt automatisch neue Prompts oder Variationen eines bestehenden Prompts.
 
 **Prompt Translate**  
-Kann positive und negative Prompts übersetzen und so die Arbeit mit englischsprachigen Bildmodellen erleichtern.
-
----
+Übersetzt positive und negative Prompts und erleichtert so die Arbeit mit englischsprachigen Bildmodellen.
 
 ## Personen und Gesichter
 
@@ -110,9 +99,7 @@ Erzeugt Bilder auf Basis eines Referenzgesichts. Optional kann zusätzlich eine 
 **FaceEnhancer**  
 Verbessert Gesichter, kann hochskalieren und bietet Funktionen zur Gesichtsbearbeitung bzw. zum Face Swap.
 
-> **Hinweis für Schulungen:** Referenzbilder realer Personen nur verwenden, wenn dies rechtlich und organisatorisch zulässig ist. Keine vertraulichen oder besonders sensiblen Personenbilder in eine öffentliche Demo hochladen.
-
----
+> **Hinweis:** Referenzbilder realer Personen nur verwenden, wenn dies rechtlich und organisatorisch zulässig ist. Keine vertraulichen oder besonders sensiblen Personenbilder in eine öffentliche Demo hochladen.
 
 ## Bearbeiten und kontrollieren
 
@@ -136,39 +123,20 @@ Unter anderem verfügbar:
 **OpenPoseEditor**  
 Posen bzw. Skelettstrukturen bearbeiten und anschließend als Vorlage verwenden.
 
----
+## Weitere nützliche Erweiterungen
 
-## Nützliche Erweiterungen
+**Omost** – unterstützt komplexere Bildkompositionen.  
+**Image Batch** – mehrere Bilder nacheinander verarbeiten oder als Referenzen einsetzen.  
+**Prompt Batch** – mehrere Prompts automatisch nacheinander generieren lassen.  
+**X/Y/Z Plot** – unterschiedliche Modelle, Sampler, Steps, CFG- oder LoRA-Einstellungen vergleichen.  
+**Remove Background** – Bildhintergründe entfernen.  
+**Cleaner** – unerwünschte Bild- oder Videoelemente anhand einer Maske entfernen.  
+**Civitai Helper** – Modelle und LoRAs von Civitai finden, prüfen und herunterladen.  
+**TextMask** – Text und passende Masken für Inpainting oder ControlNet erzeugen.  
+**Vector / SVGcode** – geeignete Rastergrafiken in Vektorgrafiken umwandeln.  
+**Photopea** – browserbasierte Bildbearbeitung.
 
-**Omost**  
-Unterstützt komplexere Bildkompositionen und beschreibt einzelne Bildbereiche strukturiert.
-
-**Image Batch**  
-Mehrere Bilder nacheinander verarbeiten, skalieren oder als Referenzen einsetzen.
-
-**Prompt Batch**  
-Mehrere Prompts automatisch nacheinander generieren lassen.
-
-**X/Y/Z Plot**  
-Vergleicht unterschiedliche Einstellungen in einem Raster – beispielsweise Modelle, Sampler, Steps, CFG oder LoRAs.
-
-**Remove Background**  
-Entfernt Bildhintergründe und unterstützt verschiedene Freistellungsmodelle.
-
-**Cleaner**  
-Entfernt kleinere unerwünschte Bild- oder Videoelemente anhand einer Maske.
-
-**Civitai Helper**  
-Unterstützt beim Finden, Prüfen und Herunterladen kompatibler Modelle und LoRAs von Civitai.
-
-**TextMask**  
-Erstellt Text und dazu passende Masken, die anschließend beispielsweise für Inpainting oder ControlNet verwendet werden können.
-
-**Vector / SVGcode**  
-Unterstützt die Umwandlung geeigneter Rastergrafiken in Vektorgrafiken.
-
-**Photopea**  
-Bindet eine browserbasierte Bildbearbeitung ein.
+Die vollständige und jeweils aktuelle Funktionsbeschreibung befindet sich im Originalprojekt.
 
 ---
 
@@ -180,47 +148,43 @@ Für die Schulungsnutzung ist die Trennung der Speicherorte besonders wichtig:
 |---|---|---|
 | **Notebook** | dauerhaft | Liegt auf GitHub bzw. optional als Kopie im eigenen Google Drive. |
 | **Fooocus_extend-Installation** | temporär | Wird unter `/content/Fooocus_extend` in der Colab-VM eingerichtet. |
-| **Modelle / temporäre Downloads** | temporär | Liegen in der Colab-Laufzeit und verschwinden mit der gelöschten Runtime. |
+| **Modelle / temporäre Downloads** | temporär | Liegen in der Colab-Laufzeit und werden mit der Runtime verworfen. |
 | **Generierte Bilder** | temporär | Standardmäßig innerhalb der Colab-VM. |
 | **Google-Drive-Ausgabe** | aus | Erst bei `GoogleDrive_output = True` werden Bilder dauerhaft in `MyDrive/outputs` gespeichert. |
-
-Kurz gesagt:
 
 > **Notebook dauerhaft · Programmumgebung temporär · Bilder optional dauerhaft**
 
 ## Google Drive
 
-Google Drive wird **nicht automatisch** verbunden. Das ist bewusst so gewählt.
+Google Drive wird **nicht automatisch** verbunden.
 
 Wenn `GoogleDrive_output = True` aktiviert wird, erhält der Notebook-Code Zugriff auf das eingebundene Google Drive. Deshalb:
 
 - Drive nur verbinden, wenn die dauerhafte Speicherung wirklich benötigt wird.
-- Keine Zugangsdaten oder vertraulichen Dateien unnötig in der gemounteten Umgebung verwenden.
 - Nur Notebook-Code aus vertrauenswürdigen Quellen ausführen.
+- Keine Passwörter, Tokens oder vertraulichen Daten in Codezellen oder gespeicherten Ausgaben hinterlegen.
 
 ## Öffentlicher Gradio-Link
 
-Bei der Standardoption `Tunnel = "gradio"` erzeugt Fooocus einen öffentlichen `gradio.live`-Link.
+Bei `Tunnel = "gradio"` erzeugt Fooocus einen öffentlichen `gradio.live`-Link.
 
 Dieser Link ist während der laufenden Sitzung über das Internet erreichbar. Deshalb:
 
-- Link nicht öffentlich posten.
-- Nur an die Person weitergeben, die die jeweilige Sitzung benutzt.
-- Keine vertraulichen oder besonders sensiblen Daten für öffentliche Demonstrationen verwenden.
-- Nach der Übung die Colab-Laufzeit beenden.
+- den Link nicht öffentlich posten,
+- ihn nur für die jeweilige Sitzung verwenden,
+- keine vertraulichen oder besonders sensiblen Daten für öffentliche Demos verwenden,
+- die Colab-Laufzeit nach der Übung beenden.
 
-## Keine Geheimnisse ins Notebook
-
-Nicht in das öffentliche GitHub-Repository oder gespeicherte Notebook-Ausgaben schreiben:
+## Nicht in das öffentliche Repository gehören
 
 - Passwörter
 - API-Keys
 - Tokens
 - personenbezogene Referenzbilder
+- generierte Bilder mit sensiblen Inhalten
 - vertrauliche Unternehmensdaten
 - interne Dokumente
-
-Falls beispielsweise ein Civitai-API-Key benötigt wird, sollte dieser nicht fest in das veröffentlichte Notebook eingetragen werden.
+- eigene Modelle oder LoRAs, sofern deren Veröffentlichung nicht ausdrücklich vorgesehen ist
 
 ---
 
@@ -232,7 +196,7 @@ Nach der Übung in Google Colab:
 
 Damit wird die aktuelle Colab-VM einschließlich der dort temporär gespeicherten Fooocus-Dateien und Bilder verworfen.
 
-Dateien, die vorher bewusst in Google Drive gespeichert wurden, bleiben selbstverständlich dort erhalten und müssen bei Bedarf separat gelöscht werden.
+Dateien, die vorher bewusst in Google Drive gespeichert wurden, bleiben dort erhalten und müssen bei Bedarf separat gelöscht werden.
 
 ---
 
