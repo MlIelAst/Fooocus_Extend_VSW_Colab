@@ -1,8 +1,8 @@
 # Fooocus_extend · VSW Google Colab
 
-Ein vereinfachtes und für Schulungen vorbereitetes **Google-Colab-Notebook für Fooocus_extend**.
+Google-Colab-Notebook für **Fooocus_extend** zur Nutzung in Schulungen, Workshops und Demonstrationen.
 
-Das Repository enthält **nicht Fooocus_extend selbst**. Beim Start lädt das Notebook den aktuellen Stand des Originalprojekts von [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend).
+Das Repository enthält **nicht Fooocus_extend selbst**. Beim Start lädt das Notebook automatisch den aktuellen Stand des Originalprojekts von [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend).
 
 ---
 
@@ -10,53 +10,41 @@ Das Repository enthält **nicht Fooocus_extend selbst**. Beim Start lädt das No
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MlIelAst/Fooocus_Extend_VSW_Colab/blob/main/Fooocus_Extend_VSW_Colab.ipynb)
 
-**Direkter Teilnehmer-Link:**
+**Direkter Colab-Link:**
 
 ```text
 https://colab.research.google.com/github/MlIelAst/Fooocus_Extend_VSW_Colab/blob/main/Fooocus_Extend_VSW_Colab.ipynb
 ```
 
-Diesen Link kannst du direkt an Teilnehmende weitergeben.
-
 ---
 
 ## ✅ Runtime und GPU sind bereits hinterlegt
 
-Das Notebook ist direkt auf **Colab Runtime 2025.07 (Python 3.11)** und eine **T4-GPU** festgelegt.
+Das Notebook ist auf **Colab Runtime 2025.07 (Python 3.11)** und eine **T4-GPU** ausgelegt.
 
-Im Normalfall müssen Teilnehmende **nichts unter „Laufzeit → Laufzeittyp ändern“ einstellen**.
+Im Normalfall ist keine manuelle Auswahl unter **Laufzeit → Laufzeittyp ändern** erforderlich.
 
-Einfach:
+### Ablauf
 
-1. Notebook öffnen
-2. **▶ Fooocus_extend STARTEN / NEUSTARTEN** ausführen
-3. Beim allerersten Start die automatische Wiederverbindung abwarten
-4. dieselbe Start-Zelle noch einmal ausführen
-5. `gradio.live`-Link öffnen
+1. Notebook öffnen.
+2. **▶ Fooocus_extend STARTEN / NEUSTARTEN** ausführen.
+3. Beim allerersten Start die automatische Wiederverbindung von Colab abwarten.
+4. Dieselbe Start-Zelle erneut ausführen.
+5. Den anschließend angezeigten `gradio.live`-Link öffnen.
 
-> Falls Colab ausnahmsweise die hinterlegte Runtime oder GPU nicht bereitstellt, zeigt das Notebook eine verständliche Fehlermeldung mit dem manuellen Ersatzweg an.
+> Falls Colab die hinterlegte Runtime oder GPU ausnahmsweise nicht bereitstellt, zeigt das Notebook eine verständliche Fehlermeldung mit dem manuellen Ersatzweg an.
 
----
-
-## Schnellstart
-
-1. **Notebook öffnen** – oben auf **Open in Colab** klicken.
-2. **Start-Zelle ausführen** – auf **▶ Fooocus_extend STARTEN / NEUSTARTEN** klicken.
-3. **Nur beim allerersten Start:** Colab passt benötigte Paketversionen an und verbindet sich danach automatisch neu.
-4. Nach der Wiederverbindung **dieselbe Start-Zelle noch einmal ausführen**.
-5. **Gradio-Link öffnen** – am Ende erscheint eine Adresse wie `https://....gradio.live`.
-
-Eine manuelle Runtime- oder GPU-Auswahl ist im Normalfall nicht erforderlich.
+Beim ersten Start kann die Einrichtung etwas länger dauern, da Abhängigkeiten und Modelle geladen werden.
 
 ---
 
-## Was wurde für die VSW-Schulung angepasst?
+## Anpassungen für den Schulungseinsatz
 
-Das Notebook basiert auf dem Colab-Start von Fooocus_extend, wurde aber für eine möglichst einfache und wiederholbare Schulungsnutzung überarbeitet.
+Das Notebook basiert auf dem Colab-Start von Fooocus_extend und wurde für einen möglichst einfachen, wiederholbaren und verständlichen Einsatz angepasst.
 
 ### Runtime und GPU automatisch vorgegeben
 
-Das Notebook fordert direkt **Runtime 2025.07** und eine **T4-GPU** an. Dadurch entfällt im Normalfall die manuelle Auswahl über **Laufzeit → Laufzeittyp ändern**.
+Das Notebook fordert direkt **Runtime 2025.07** und eine **T4-GPU** an. Dadurch entfällt im Regelfall die manuelle Konfiguration der Laufzeit.
 
 ### Automatische Vorbereitung
 
@@ -66,26 +54,26 @@ Die Start-Zelle prüft automatisch die benötigten Versionen von:
 - `pygit2`
 - `numpy`
 
-Weichen die Versionen beim ersten Start ab, werden sie automatisch angepasst. Colab verbindet sich danach einmal neu. Anschließend wird dieselbe Start-Zelle erneut ausgeführt.
+Weichen die Versionen beim ersten Start ab, werden sie automatisch angepasst. Anschließend verbindet sich Colab einmal neu.
 
 ### GPU- und CUDA-Prüfung
 
-Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch gibt es bei einer versehentlich gestarteten CPU-Laufzeit eine verständliche Meldung statt eines schwer lesbaren CUDA-Abbruchs.
+Vor dem Start wird geprüft, ob tatsächlich eine NVIDIA-GPU verfügbar ist. Dadurch erscheint bei einer CPU-Laufzeit eine verständliche Meldung statt eines schwer lesbaren CUDA-Abbruchs.
 
 ### Wiederholbarer Start
 
 - vorhandene Fooocus-Prozesse werden vor einem Neustart beendet,
 - Fooocus_extend wird nur geklont, wenn es noch nicht vorhanden ist,
 - eine vorhandene Installation wird auf den aktuellen `main`-Stand aktualisiert,
-- Fehler wie `destination path already exists` werden vermieden.
+- typische Fehler wie `destination path already exists` werden vermieden.
 
 ### Google Drive nur optional
 
 `GoogleDrive_output` ist standardmäßig auf **False** gesetzt.
 
-Dadurch bleiben generierte Bilder zunächst nur in der temporären Colab-Umgebung. Wer Ergebnisse dauerhaft speichern möchte, kann die Option bewusst auf **True** setzen.
+Dadurch bleiben generierte Bilder zunächst nur in der temporären Colab-Umgebung. Für eine dauerhafte Speicherung kann die Option bewusst auf **True** gesetzt werden.
 
-### Direkt auswählbar
+### Direkt auswählbare Einstellungen
 
 - Profil: `realistic`, `default` oder `anime`
 - helles oder dunkles Theme
@@ -97,7 +85,7 @@ Dadurch bleiben generierte Bilder zunächst nur in der temporären Colab-Umgebun
 
 # Was ist Fooocus_extend?
 
-Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung.
+Fooocus_extend ist ein erweiterter Fork von **Fooocus**. Die Oberfläche bleibt vergleichsweise einfach, ergänzt Fooocus aber um zahlreiche zusätzliche Funktionen für Bildgenerierung und Bildbearbeitung.
 
 ## Bildgenerierung
 
@@ -164,7 +152,7 @@ Die vollständige und jeweils aktuelle Funktionsbeschreibung befindet sich im Or
 
 # Datenhaltung und Sicherheit
 
-Für die Schulungsnutzung ist die Trennung der Speicherorte besonders wichtig:
+Für die Nutzung in Schulungen ist die Trennung der Speicherorte besonders wichtig:
 
 | Bereich | Standard | Was passiert? |
 |---|---|---|
@@ -180,9 +168,9 @@ Für die Schulungsnutzung ist die Trennung der Speicherorte besonders wichtig:
 
 Google Drive wird **nicht automatisch** verbunden.
 
-Wenn `GoogleDrive_output = True` aktiviert wird, erhält der Notebook-Code Zugriff auf das eingebundene Google Drive. Deshalb:
+Wenn `GoogleDrive_output = True` aktiviert wird, erhält der Notebook-Code Zugriff auf das eingebundene Google Drive. Daher gelten folgende Grundsätze:
 
-- Drive nur verbinden, wenn die dauerhafte Speicherung wirklich benötigt wird.
+- Drive nur verbinden, wenn eine dauerhafte Speicherung erforderlich ist.
 - Nur Notebook-Code aus vertrauenswürdigen Quellen ausführen.
 - Keine Passwörter, Tokens oder vertraulichen Daten in Codezellen oder gespeicherten Ausgaben hinterlegen.
 
@@ -190,14 +178,14 @@ Wenn `GoogleDrive_output = True` aktiviert wird, erhält der Notebook-Code Zugri
 
 Bei `Tunnel = "gradio"` erzeugt Fooocus einen öffentlichen `gradio.live`-Link.
 
-Dieser Link ist während der laufenden Sitzung über das Internet erreichbar. Deshalb:
+Dieser Link ist während der laufenden Sitzung über das Internet erreichbar. Daher:
 
-- den Link nicht öffentlich posten,
+- den Link nicht öffentlich veröffentlichen,
 - ihn nur für die jeweilige Sitzung verwenden,
 - keine vertraulichen oder besonders sensiblen Daten für öffentliche Demos verwenden,
 - die Colab-Laufzeit nach der Übung beenden.
 
-## Nicht in das öffentliche Repository gehören
+## Nicht in ein öffentliches Repository gehören
 
 - Passwörter
 - API-Keys
@@ -212,23 +200,23 @@ Dieser Link ist während der laufenden Sitzung über das Internet erreichbar. De
 
 # Sitzung sicher beenden
 
-Nach der Übung in Google Colab:
+Nach der Nutzung in Google Colab:
 
 **Laufzeit → Laufzeit trennen und löschen**
 
 Damit wird die aktuelle Colab-VM einschließlich der dort temporär gespeicherten Fooocus-Dateien und Bilder verworfen.
 
-Dateien, die vorher bewusst in Google Drive gespeichert wurden, bleiben dort erhalten und müssen bei Bedarf separat gelöscht werden.
+Dateien, die zuvor bewusst in Google Drive gespeichert wurden, bleiben dort erhalten und müssen bei Bedarf separat gelöscht werden.
 
 ---
 
-# Hinweise für Teilnehmende
+# Hinweise
 
 - Das Notebook fordert automatisch **Runtime 2025.07** und eine **T4-GPU** an.
 - Eine kostenlose Colab-GPU ist trotzdem nicht jederzeit garantiert verfügbar.
 - Colab kann längere oder ressourcenintensive Sitzungen beenden.
 - Die Rechenleistung kommt aus der Colab-Cloud; eine leistungsfähige lokale Grafikkarte ist deshalb nicht erforderlich.
-- Das Notebook lädt Code und Modelle von externen Projekten. Für produktive oder besonders sensible Daten sollten die jeweils geltenden Datenschutz-, Sicherheits- und Organisationsvorgaben geprüft werden.
+- Das Notebook lädt Code und Modelle von externen Projekten. Für produktive oder besonders sensible Daten sind die jeweils geltenden Datenschutz-, Sicherheits- und Organisationsvorgaben zu beachten.
 
 ---
 
@@ -239,7 +227,7 @@ Fooocus_extend wird von **shaitanzx** entwickelt und basiert auf Fooocus.
 - Originalprojekt: https://github.com/shaitanzx/Fooocus_extend
 - Original Fooocus: https://github.com/lllyasviel/Fooocus
 
-Dieses Repository ist eine **angepasste Colab-Starthilfe für VSW-Schulungen** und kein Ersatz für die Dokumentation oder das Repository des ursprünglichen Projekts.
+Dieses Repository stellt eine **angepasste Colab-Starthilfe für VSW-Schulungen und Workshops** bereit. Die technische Dokumentation und die jeweils aktuellen Funktionen von Fooocus_extend befinden sich im Originalprojekt.
 
 ---
 
