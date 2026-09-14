@@ -2,7 +2,7 @@
 
 Google-Colab-Notebook für **Fooocus_extend** zur Nutzung in Schulungen, Workshops und Demonstrationen.
 
-Das Repository enthält **nicht Fooocus_extend selbst**. Der Programmcode wird beim Start aus dem Originalprojekt [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend) bezogen.
+Das Repository enthält **nicht Fooocus_extend selbst**. Beim Start wird der Programmcode aus dem Originalprojekt [`shaitanzx/Fooocus_extend`](https://github.com/shaitanzx/Fooocus_extend) geladen.
 
 ---
 
@@ -10,7 +10,7 @@ Das Repository enthält **nicht Fooocus_extend selbst**. Der Programmcode wird b
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MlIelAst/Fooocus_Extend_VSW_Colab/blob/main/Fooocus_Extend_VSW_Colab.ipynb)
 
-**Direkter Colab-Link**
+Direkter Link:
 
 ```text
 https://colab.research.google.com/github/MlIelAst/Fooocus_Extend_VSW_Colab/blob/main/Fooocus_Extend_VSW_Colab.ipynb
@@ -18,123 +18,279 @@ https://colab.research.google.com/github/MlIelAst/Fooocus_Extend_VSW_Colab/blob/
 
 ---
 
-## Wichtige Runtime-Vorgabe
+# Neue robuste VSW-Fassung: isolierte Python-Umgebung
 
-Für diese Schulungsfassung wird **Colab Runtime 2025.07 mit Python 3.11.13** verwendet.
+Fooocus_extend benötigt einen anderen Paketstand als die jeweils aktuelle Google-Colab-Systemumgebung. Die VSW-Fassung verändert deshalb **nicht mehr** Colabs vorinstallierte Torch-, CUDA-, cuDNN- oder NumPy-Pakete.
 
-Der Hintergrund: Die aktuelle Fooocus-/Fooocus_extend-Abhängigkeitsbasis ist auf Python 3.11 ausgelegt. Unter Python 3.12 können Installations- und Importfehler auftreten. Das Notebook prüft deshalb die Python-Version **vor** dem langwierigen Fooocus-Start und bricht bei einer ungeeigneten Runtime sofort mit einer verständlichen Anleitung ab.
+Stattdessen wird automatisch eine eigene Umgebung angelegt:
 
-Wenn Colab die hinterlegte Runtime ausnahmsweise nicht übernimmt:
+```text
+/content/fooocus_venv
+```
 
-**Laufzeit → Laufzeittyp ändern → Runtime-Version 2025.07 → GPU/T4**
+Dadurch werden Konflikte wie
 
-Google führt Runtime 2025.07 weiterhin als verfügbare vergangene Runtime mit Python 3.11.13.
+```text
+torch ... requires nvidia-... but you have ...
+opencv-python-headless ... requires numpy>=2 but you have numpy 1.26.4
+```
 
----
-
-## Was wurde für den Schulungseinsatz verbessert?
-
-- Runtime 2025.07 / Python 3.11 und GPU sind im Notebook hinterlegt.
-- Falsche Python-Versionen werden sofort erkannt, bevor lange Installationen starten.
-- Fortschrittsphasen und vergangene Zeit werden angezeigt.
-- Während längerer Phasen erscheint regelmäßig ein Status-Heartbeat.
-- Restzeiten werden als **Richtwert** je Phase angezeigt.
-- Der Fooocus-Start läuft ungepuffert, damit Logzeilen möglichst sofort sichtbar sind.
-- Das vollständige Startprotokoll wird nach `/content/fooocus_extend_startup.log` geschrieben.
-- Bei einem Fehler werden automatisch die letzten Logzeilen und bekannte Fehlerbilder ausgegeben.
-- Der doppelte Updater wurde entfernt: Das Notebook synchronisiert den Code selbst und startet danach direkt `launch.py`.
-- Der Git-Clone erfolgt flach (`--depth 1`) und spart Zeit.
-- Für Schulungen ist standardmäßig ein **getesteter Fooocus_extend-Stand v9.3.5** fixiert.
-- Optional kann auf den jeweils aktuellen `main`-Stand umgestellt werden.
-- `GoogleDrive_output = False` bleibt der datensparsame Standard.
+nicht mehr durch globale Paket-Downgrades erzeugt.
 
 ---
 
-## Typischer Ablauf
+## Empfohlene Runtime
+
+Für den VSW-Kurs vorgesehen:
+
+- **Colab Runtime 2025.07**
+- **Python 3.11**
+- **NVIDIA GPU**, bevorzugt T4
+
+Die Metadaten sind im Notebook hinterlegt. Sind Python-Version, GPU oder freier Speicher ungeeignet, bricht der Launcher **vor** der langen Installation verständlich ab.
+
+---
+
+# Start
 
 1. Notebook öffnen.
-2. **▶ Fooocus_extend STARTEN / NEUSTARTEN** ausführen.
-3. Falls Paketversionen angepasst werden müssen, startet Colab einmal automatisch neu.
-4. Nach der Wiederverbindung dieselbe Zelle erneut ausführen.
-5. Fortschritt und aktuelle Phase beobachten.
-6. Sobald ein `gradio.live`-Link erscheint, die Oberfläche öffnen.
+2. Auf **▶ Fooocus_extend STARTEN / NEUSTARTEN** klicken.
+3. Beim ersten Start die Einrichtung abwarten.
+4. Den anschließend angezeigten `gradio.live`-Link öffnen.
 
-Beim ersten erfolgreichen Start sind längere Wartezeiten normal, weil Pakete und Modelldateien geladen werden. Die Dauer hängt stark von Colab- und Download-Auslastung ab; deshalb zeigt das Notebook bewusst nur Zeit-Richtwerte und keine scheinpräzise ETA.
+Ein zusätzlicher Kernel-Neustart nur wegen Fooocus-Abhängigkeiten ist in der neuen isolierten Fassung nicht mehr vorgesehen.
 
 ---
 
-## Fortschrittsanzeige
+# Fortschritt und Zeit-Richtwerte
 
-Die Prozentwerte zeigen die **Startphase**, nicht den exakten Byte-Fortschritt sämtlicher Downloads:
+Der Launcher zeigt sieben Phasen:
 
-- **0–20 %** Runtime, GPU, CUDA und Basis-Abhängigkeiten
-- **20–35 %** Fooocus_extend bereitstellen
-- **35–55 %** Python-Pakete
-- **55–90 %** Modelle und Hilfsdateien
-- **90–100 %** Weboberfläche und Tunnel
+1. System prüfen
+2. Fooocus-Code bereitstellen
+3. isolierte Python-Umgebung vorbereiten
+4. PyTorch/CUDA-Pakete in der VENV installieren
+5. Fooocus-Abhängigkeiten installieren
+6. optionale Dienste vorbereiten
+7. Fooocus starten und ggf. Modelle laden
 
-Bei Downloads zeigt Fooocus bzw. pip zusätzlich eigene Fortschrittsangaben, sofern der jeweilige Downloader diese bereitstellt.
+Während längerer Schritte erscheint regelmäßig ein Heartbeat, z. B.:
+
+```text
+… läuft weiter | Fooocus-Abhängigkeiten | gesamt 06:42
+```
+
+Die Zeitangaben sind **Richtwerte**, keine exakte ETA. Colab-Auslastung, Paketserver und Modelldownloads können stark schwanken.
+
+Der erste Start kann ungefähr **8–30 Minuten** dauern. Ein erneuter Start in derselben Colab-Runtime ist meist deutlich schneller.
 
 ---
 
-## Diagnose
+# Reproduzierbarer Schulungsstand
 
-Bei Startfehlern wird automatisch ein Diagnoseblock ausgegeben.
+Standardmäßig verwendet der Launcher den getesteten Fooocus_extend-Stand:
 
-Zusätzlich steht das vollständige Protokoll unter:
+```text
+v9.3.5
+Commit: 7d32c923c172644023f77243bd7af4183ecb3737
+```
+
+Für Schulungen empfohlen:
+
+```text
+Use_latest_main = False
+```
+
+Wer bewusst den aktuellen Upstream-Stand testen möchte, kann auf `True` umstellen. Dadurch sinkt die Reproduzierbarkeit.
+
+---
+
+# Einstellungen im Notebook
+
+Direkt auswählbar:
+
+- `Fooocus_Profile`: `default`, `realistic`, `anime`
+- `Fooocus_Theme`: `dark`, `light`
+- `Tunnel`: `gradio`, `cloudflared`
+- `Memory_patch`
+- `GoogleDrive_output`
+- `Use_latest_main`
+- `Force_rebuild_environment`
+
+Empfehlung:
+
+```text
+Fooocus_Profile = realistic
+Fooocus_Theme = dark
+Tunnel = gradio
+Memory_patch = True
+GoogleDrive_output = False
+Use_latest_main = False
+Force_rebuild_environment = False
+```
+
+---
+
+# Was geschieht technisch?
+
+## 1. Vorprüfung
+
+Vor großen Downloads werden Python-Version, NVIDIA-GPU und verfügbarer Speicher geprüft.
+
+## 2. Fooocus-Code
+
+Der Code wird schlank geklont und auf den gewünschten Stand gesetzt.
+
+## 3. Virtuelle Umgebung
+
+Fooocus erhält eine eigene Python-Umgebung:
+
+```text
+/content/fooocus_venv
+```
+
+Falls das Standardmodul `venv` ausnahmsweise nicht verfügbar sein sollte, fällt der Launcher auf `virtualenv` zurück.
+
+## 4. PyTorch
+
+Innerhalb der isolierten Umgebung wird installiert:
+
+```text
+torch 2.1.0
+torchvision 0.16.0
+CUDA-Wheels 12.1
+```
+
+Die systemweiten Colab-Pakete bleiben unangetastet.
+
+## 5. Fooocus-Abhängigkeiten
+
+Danach wird die Upstream-Datei `requirements_versions.txt` innerhalb derselben Umgebung installiert und anschließend mit `pip check` geprüft.
+
+## 6. Wiederverwendung
+
+Ein erfolgreicher Einrichtungsstand wird unter
+
+```text
+/content/fooocus_venv/.vsw_setup.json
+```
+
+markiert. Stimmen Code und Requirements weiterhin überein, werden die schweren Installationsschritte bei einem erneuten Start derselben Runtime übersprungen.
+
+---
+
+# Diagnose bei Fehlern
+
+Das vollständige Startprotokoll liegt unter:
 
 ```text
 /content/fooocus_extend_startup.log
 ```
 
-Wenn Support benötigt wird, reichen in der Regel die **letzten 50–100 Logzeilen** vor dem Diagnoseblock.
+Bei einem Fehler werden zusätzlich die letzten Logzeilen und zentrale Versionsinformationen ausgegeben. Damit ist ein Fehler wesentlich besser einzuordnen als ein alleiniger `CalledProcessError`.
 
 ---
 
-## Datenhaltung
+# Datenhaltung
 
 | Bereich | Standard | Bedeutung |
 |---|---|---|
 | Notebook | dauerhaft | GitHub bzw. optional eigene Drive-Kopie |
-| Fooocus_extend | temporär | `/content/Fooocus_extend` in der Colab-VM |
-| Modelle / Downloads | temporär | innerhalb der laufenden Colab-Sitzung |
-| Generierte Bilder | temporär | solange `GoogleDrive_output = False` |
-| Google-Drive-Ausgabe | aus | bei Aktivierung Speicherung in `MyDrive/outputs` |
+| Fooocus-Code | temporär | `/content/Fooocus_extend` |
+| isolierte Python-Umgebung | temporär | `/content/fooocus_venv` |
+| Modelle / Downloads | temporär | Colab-VM |
+| generierte Bilder | temporär | Standard ohne Drive |
+| Google-Drive-Ausgabe | aus | nur bei `GoogleDrive_output = True` dauerhaft |
 
 > **Notebook dauerhaft · Programmumgebung temporär · Bilder optional dauerhaft**
 
 ---
 
-## Sicherheit
+# Google Drive
 
-- Google Drive nur verbinden, wenn eine dauerhafte Speicherung erforderlich ist.
-- Keine Passwörter, Tokens oder API-Keys in Codezellen, Zell-Ausgaben oder ein öffentliches Repository schreiben.
-- Keine vertraulichen oder besonders schutzbedürftigen Inhalte für öffentliche Demo-Sitzungen verwenden.
-- Den `gradio.live`-Link nicht öffentlich veröffentlichen.
-- Nach der Übung: **Laufzeit → Laufzeit trennen und löschen**.
+`GoogleDrive_output = False` ist absichtlich der Standard.
+
+Nur wenn eine dauerhafte Speicherung benötigt wird, `GoogleDrive_output = True` setzen. Dann wird `MyDrive/outputs` verwendet.
 
 ---
 
-## Zwei Notebook-Dateinamen
+# Öffentlicher Gradio-Link
 
-Aus Kompatibilitätsgründen liegen derzeit zwei Dateinamen im Repository:
+Bei `Tunnel = "gradio"` entsteht ein temporärer öffentlicher `gradio.live`-Link.
 
-- `Fooocus_Extend_VSW_Colab.ipynb` – **kanonische und empfohlene Fassung**
-- `Fooocus_extend_VSW_Colab.ipynb` – ältere Schreibweise aus früheren Unterlagen
+Daher:
 
-Für neue Schulungslinks und Dokumentationen bitte ausschließlich die kanonische Fassung mit großem **E** in `Extend` verwenden.
+- Link nicht öffentlich veröffentlichen,
+- nur für die jeweilige Sitzung verwenden,
+- keine vertraulichen Inhalte für öffentliche Demos laden,
+- Sitzung nach dem Workshop beenden.
 
 ---
 
-## Originalprojekt
+# Sicherheit
+
+Nicht in Notebook, öffentliche Ausgaben oder Repository schreiben:
+
+- Passwörter
+- API-Keys
+- Tokens
+- vertrauliche Unternehmensdaten
+- nicht freigegebene personenbezogene Bilder
+- interne Dokumente
+- sensible Outputs
+
+---
+
+# Sitzung beenden
+
+Nach der Übung:
+
+**Laufzeit → Laufzeit trennen und löschen**
+
+Dadurch werden Fooocus-Code, virtuelle Umgebung und temporär gespeicherte Bilder verworfen. In Google Drive gespeicherte Dateien bleiben erhalten und müssen bei Bedarf separat gelöscht werden.
+
+---
+
+# Fooocus_extend
+
+Fooocus_extend erweitert Fooocus u. a. um Funktionen für:
+
+- Text-to-Image
+- Modelle und LoRAs
+- OneButtonPrompt
+- Prompt Translate
+- InstantID
+- FaceEnhancer
+- Inpaint / Eraser
+- Outpaint mit Zielauflösung
+- ControlNet / OpenPose
+- ADetailer
+- Omost
+- Image Batch
+- Prompt Batch
+- X/Y/Z Plot
+- Remove Background
+- Cleaner
+- Civitai Helper
+- TextMask
+- Vector / SVGcode
+- Photopea
+
+Die jeweils aktuelle technische Funktionsbeschreibung befindet sich im Originalprojekt.
+
+---
+
+# Originalprojekt
 
 - Fooocus_extend: https://github.com/shaitanzx/Fooocus_extend
 - Fooocus: https://github.com/lllyasviel/Fooocus
 
-Dieses Repository stellt lediglich die angepasste VSW-Colab-Starthilfe bereit.
+Dieses Repository stellt eine angepasste Colab-Starthilfe für VSW-Schulungen und Workshops bereit.
 
 ---
 
-## Lizenz
+# Lizenz
 
-Fooocus_extend steht unter der **GNU Affero General Public License v3.0 (AGPL-3.0)**. Siehe [`LICENSE`](LICENSE).
+Fooocus_extend steht unter der **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+
+Siehe [`LICENSE`](LICENSE).
