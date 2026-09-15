@@ -5,8 +5,8 @@ from pathlib import Path
 
 PROFILE = "realistic"
 THEME = "dark"
-TUNNEL = "gradio"
-MEMORY_PATCH = True
+TUNNEL = "cloudflared"
+MEMORY_PATCH = False
 GOOGLE_DRIVE_OUTPUT = False
 USE_LATEST_MAIN = False
 FORCE_REBUILD = False
@@ -23,6 +23,7 @@ LOG = Path("/content/fooocus_extend_startup.log")
 OUT = Path("/content/drive/MyDrive/outputs")
 START = time.time()
 PHASE = {"name":"Start"}
+VSW_HELPER_REF = os.environ.get("VSW_HELPER_REF", "main")
 
 def elapsed():
     s=int(time.time()-START); return f"{s//60:02d}:{s%60:02d}"
@@ -72,6 +73,10 @@ print("GPU:",g.stdout.strip(),flush=True)
 free=shutil.disk_usage("/content").free/1024**3
 print(f"Freier Speicher: {free:.1f} GB",flush=True)
 if free<12: raise RuntimeError("Zu wenig freier Speicher; mindestens ca. 12 GB erforderlich.")
+if TUNNEL == "gradio":
+    print("[VSW-HINWEIS] Gradio-Share ist als Fallback aktiv. Für Schulungen wird Cloudflared bevorzugt.", flush=True)
+if MEMORY_PATCH:
+    print("[VSW-HINWEIS] High-VRAM-Modus ist aktiviert. Auf T4/16-GB-GPUs kann das bei FaceEnhancer/ADetailer OOM begünstigen.", flush=True)
 
 phase(2,"Fooocus-Code bereitstellen","0–2 Min.")
 ref="main" if USE_LATEST_MAIN else PINNED
@@ -138,8 +143,8 @@ if GOOGLE_DRIVE_OUTPUT:
 else:
     print("Google Drive bleibt getrennt.",flush=True)
 
-# Die Hilfsdateien stammen aus diesem VSW-Repository. So bleibt der Launcher selbst kompakt.
-helper_base="https://raw.githubusercontent.com/MlIelAst/Fooocus_Extend_VSW_Colab/main/"
+# Hilfsdateien stammen aus diesem VSW-Repository. VSW_HELPER_REF erlaubt sichere Branch-Tests.
+helper_base=f"https://raw.githubusercontent.com/MlIelAst/Fooocus_Extend_VSW_Colab/{VSW_HELPER_REF}/"
 for helper in ("vsw_civitai.py","vsw_runtime.py"):
     target=Path("/content")/helper
     import urllib.request
@@ -158,13 +163,14 @@ if TUNNEL=="cloudflared":
     run([str(PY),str(ROOT/"patcher_tunel.py")],cwd=ROOT)
 
 phase(7,"Fooocus starten / Modelle laden","2–15+ Min. beim ersten Start")
-args=[str(PY),"launch.py","--port","7865"]
+args=[str(PY),"launch.py","--port","7865","--disable-analytics"]
 if PROFILE in ("realistic","anime"): args+=["--preset",PROFILE]
 if THEME=="dark": args+=["--theme","dark"]
 if TUNNEL=="gradio": args+=["--share"]
 if MEMORY_PATCH: args+=["--always-high-vram","--all-in-fp16"]
 args+=output
 print("Code-Stand:",commit[:12],"| VENV:",PY,"| Log:",LOG,flush=True)
+print("VSW-Helfer-Ref:",VSW_HELPER_REF,"| Tunnel:",TUNNEL,"| High-VRAM:",MEMORY_PATCH,flush=True)
 try:
     from vsw_runtime import run_fooocus
     run_fooocus(args,cwd=ROOT,log_path=LOG,tunnel=TUNNEL,start_time=START)
